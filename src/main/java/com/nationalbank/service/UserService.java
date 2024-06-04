@@ -1,6 +1,7 @@
 package com.nationalbank.service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -54,4 +55,19 @@ public class UserService implements UserDetailsService{
 	    public List<User> getAllUsers(){
 	    	    	return userRepository.findAll();
 	    	    }
+	    
+	    public User updateUser(Long id, User user) {
+	    	Optional<User> oldUser = userRepository.findById(id);
+	    	User dbUser = new User();
+	    	if(oldUser.isPresent()) {
+	    		dbUser = oldUser.get();
+	    	}
+	    	if(Objects.nonNull(dbUser)) {
+	    		dbUser.setEmail(user.getEmail());
+	    		dbUser.setFullName(user.getFullName());
+		    	userRepository.save(dbUser);
+	    	}
+	    	return dbUser;
+	    	
+	    }
 }
