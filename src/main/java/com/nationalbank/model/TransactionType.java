@@ -2,7 +2,7 @@ package com.nationalbank.model;
 
 public enum TransactionType {
 
-    WITHDRAWAL,
+    WITHDRAW,
     DEPOSIT,
     TRANSFER
 }

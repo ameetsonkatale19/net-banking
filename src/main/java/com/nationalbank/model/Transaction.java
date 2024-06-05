@@ -40,10 +40,10 @@ public class Transaction {
     @JoinColumn(name = "source_account_id", nullable = false)
     private Account sourceAccount;
     
-    @ManyToOne
-    @JoinColumn(name = "destination_account_id", nullable = false)
-    private Account destinationAccount;
-    
+	    @ManyToOne
+	    @JoinColumn(name = "destination_account_id")
+	    private Account destinationAccount;
+	    
 
 	public Long getId() {
 		return id;

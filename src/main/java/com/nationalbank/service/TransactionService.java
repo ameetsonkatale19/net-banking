@@ -22,6 +22,7 @@ import com.nationalbank.model.TransactionType;
 import com.nationalbank.model.User;
 import com.nationalbank.repository.AccountRepository;
 import com.nationalbank.repository.TransactionRepository;
+import com.nationalbank.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -36,9 +37,12 @@ public class TransactionService {
     
     @Autowired
     private TransactionRepository transactionRepository;
+    
+    @Autowired
+    private UserRepository userRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(TransactionService.class);
-
+   
     
     @Transactional
     public Transaction transferToAccount(String username, String destinationAccountNumber, double amount, String receiverName, String remarks) {
@@ -85,11 +89,14 @@ public class TransactionService {
     }
     
     @Transactional
-    public Transaction deposit(String username, String accountNumber, double amount) {
-        Account account = accountRepository.findByAccountNumber(accountNumber)
-                .orElseThrow(() -> new RuntimeException("Account not found"));
+    public Transaction deposit(String username, double amount) {
+    	 User user = userRepository.findByUsername(username);
+                 
+         Account account = accountRepository.findByUser(user)
+                 .orElseThrow(() -> new RuntimeException("Account not found"));
+         System.out.println("account details : "+ account);
+         account.setBalance(account.getBalance() + amount);
 
-        account.setBalance(account.getBalance() + amount);
 
         Transaction transaction = new Transaction();
         transaction.setSourceAccount(account);
@@ -102,7 +109,8 @@ public class TransactionService {
 
         return transaction;
     }
-
+    
+   
     @Transactional
     public Transaction withdraw(String accountNumber, double amount) {
         Account account = accountRepository.findByAccountNumber(accountNumber)
@@ -118,7 +126,7 @@ public class TransactionService {
         transaction.setSourceAccount(account);
         transaction.setDestinationAccount(account);
         transaction.setAmount(amount);
-        transaction.setTransactionType(TransactionType.WITHDRAWAL);
+        transaction.setTransactionType(TransactionType.WITHDRAW);
         transaction.setTransaction_date(LocalDate.now());
 
         transactionRepository.save(transaction);
@@ -126,5 +134,7 @@ public class TransactionService {
 
         return transaction;
     }
+    
+    
     
 }

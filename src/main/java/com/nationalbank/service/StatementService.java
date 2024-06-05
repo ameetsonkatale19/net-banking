@@ -35,4 +35,5 @@ public class StatementService {
 	            return transactionRepository.findAllByAccount(account);
 	        }
 	    }
+
 }

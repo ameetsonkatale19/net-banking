@@ -28,7 +28,7 @@ public class SwaggerConfiguration {
     @Bean
     public MappingJackson2HttpMessageConverter octetStreamJsonConverter() {
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setSupportedMediaTypes(List.of(MediaType.APPLICATION_JSON, new MediaType("application", "octet-stream")));
+        converter.setSupportedMediaTypes(List.of(MediaType.APPLICATION_JSON, new MediaType("application", "octet-stream"), MediaType.APPLICATION_PDF));
         return converter;
     }
 }
